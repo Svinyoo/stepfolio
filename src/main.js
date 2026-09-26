@@ -181,6 +181,20 @@ ipcMain.handle('stepfolio',async(e,action,data)=>{
         if(!r.canceled){await writePDF(r.filePath);shell.showItemInFolder(r.filePath);return {ok:true,value:r.filePath};}break;
       }
       case 'testHook':if(!testMode)throw new Error('Unavailable');return {ok:true,value:!!require('uiohook-napi').uIOhook && !!require('uiohook-napi').UiohookKey.Enter};
+      case 'testNativeEnter':{
+        if(!testMode || process.platform!=='win32' || !recording)throw new Error('Unavailable');
+        // Windows CI only: focus our own blank fixture before sending a native
+        // Enter event, so the test never types into another application.
+        const fixture=new BrowserWindow({width:600,height:400,webPreferences:{sandbox:true,contextIsolation:true,nodeIntegration:false}});
+        try{
+          await fixture.loadURL('data:text/html,<html><title>Stepfolio recording test</title><body style="background:white;color:black;font:24px sans-serif">Stepfolio native input test</body></html>');
+          fixture.show();fixture.focus();await sleep(300);
+          if(!fixture.isFocused())throw new Error('Test fixture did not receive focus');
+          require('uiohook-napi').uIOhook.keyTap(require('uiohook-napi').UiohookKey.Enter);
+          await sleep(1000);await queue;
+        }finally{fixture.destroy();}
+        break;
+      }
       case 'testLoad':if(!testMode)throw new Error('Unavailable');project=validateProject(data);publish();break;
       case 'testPDF':if(!testMode)throw new Error('Unavailable');await writePDF(data);break;
       default:throw new Error('ไม่รู้จักคำสั่ง');

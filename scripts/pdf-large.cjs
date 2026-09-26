@@ -7,7 +7,8 @@ const { createProject } = require('../src/project');
 (async () => {
   const out = path.resolve('test-results/pdf-large');
   await fs.mkdir(out, { recursive: true });
-  const app = await electron.launch({ args: ['.'], env: { ...process.env, STEPFOLIO_TEST: '1', STEPFOLIO_TEST_DATA: path.join(out, 'app-data') } });
+  const executablePath=process.env.STEPFOLIO_EXECUTABLE;
+  const app = await electron.launch({ ...(executablePath?{executablePath,args:[]}:{args:['.']}), env: { ...process.env, STEPFOLIO_TEST: '1', STEPFOLIO_TEST_DATA: path.join(out, 'app-data') } });
   try {
     const page = await app.firstWindow();
     await page.waitForSelector('#start-empty');

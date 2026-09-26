@@ -1,0 +1,79 @@
+name: Windows release and verification
+on:
+  workflow_dispatch:
+  push:
+    tags: ['windows-v*']
+permissions:
+  contents: read
+jobs:
+  verify-and-package:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - name: Build Windows Setup, Portable and ZIP
+        run: npx electron-builder --win nsis portable zip --x64 --publish never
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - name: Install the actual Setup executable
+        shell: pwsh
+        run: |
+          $version = (Get-Content package.json | ConvertFrom-Json).version
+          $installer = (Resolve-Path "release/Stepfolio-Setup-$version-x64.exe").Path
+          $destination = Join-Path $env:RUNNER_TEMP 'Stepfolio-Installed'
+          $process = Start-Process -FilePath $installer -ArgumentList '/S', "/D=$destination" -Wait -PassThru
+          if ($process.ExitCode -ne 0) { throw "Installer exited with $($process.ExitCode)" }
+          $executable = Join-Path $destination 'Stepfolio.exe'
+          if (!(Test-Path $executable)) { throw 'Installed executable not found' }
+          "STEPFOLIO_EXECUTABLE=$executable" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      - name: Test the installed app editor and project files
+        run: node scripts/smoke.cjs
+      - name: Test large PDF export in the installed app
+        run: node scripts/pdf-large.cjs
+      - name: Test real Windows screen capture and native input
+        run: node scripts/record-windows.cjs
+      - name: Generate file checksums
+        shell: pwsh
+        run: |
+          Get-ChildItem release -File | Where-Object { $_.Extension -in '.exe','.zip' } | ForEach-Object {
+            $hash = (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower()
+            "$hash  $($_.Name)"
+          } | Set-Content release/SHA256SUMS-Windows.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Stepfolio-Windows-verified
+          if-no-files-found: error
+          path: |
+            release/*.exe
+            release/*.zip
+            release/SHA256SUMS-Windows.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Windows-test-evidence
+          path: test-results/
+          retention-days: 7
+  publish:
+    needs: verify-and-package
+    if: startsWith(github.ref, 'refs/tags/windows-v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: Stepfolio-Windows-verified
+          path: artifacts
+      - name: Publish verified Windows files
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$RELEASE_TAG" artifacts/* --title "Stepfolio ${RELEASE_TAG#windows-v} for Windows" --notes "Includes the large-screenshot PDF export fix. Windows Setup was installed and its app passed editor/project, large PDF, and native recording tests on the GitHub Windows runner. Unsigned build; Windows may show an unknown-publisher warning."

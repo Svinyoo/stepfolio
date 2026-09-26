@@ -5,7 +5,8 @@ const path=require('node:path');
 const {createProject}=require('../src/project');
 (async()=>{
   const out=path.resolve('test-results');await fs.mkdir(out,{recursive:true});
-  const app=await electron.launch({args:['.'],env:{...process.env,STEPFOLIO_TEST:'1',STEPFOLIO_TEST_DATA:path.join(out,'app-data')}});
+  const executablePath=process.env.STEPFOLIO_EXECUTABLE;
+  const app=await electron.launch({...(executablePath?{executablePath,args:[]}:{args:['.']}),env:{...process.env,STEPFOLIO_TEST:'1',STEPFOLIO_TEST_DATA:path.join(out,'app-data')}});
   const errors=[];
   try{
     const page=await app.firstWindow();page.on('pageerror',e=>errors.push(e.message));await page.waitForSelector('#start-empty');
