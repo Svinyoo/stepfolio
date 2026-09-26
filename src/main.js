@@ -134,13 +134,27 @@ async function stopRecording() {
   if(bar && !bar.isDestroyed())bar.destroy();bar=null;paused=false;stopping=false;win.show();win.focus();publish();
 }
 async function writePDF(file) {
+  const html=pdfHTML(project);
   const output=new BrowserWindow({show:false,webPreferences:{sandbox:true,contextIsolation:true,nodeIntegration:false}});
+  let tempDir;
   try {
-    await output.loadURL('data:text/html;charset=utf-8,'+encodeURIComponent(pdfHTML(project)));
+    // Real screenshots exceed Chromium's navigation URL limit. Keep the document
+    // on disk instead of encoding its images into a data: navigation URL.
+    tempDir=await fs.mkdtemp(path.join(app.getPath('temp'),'stepfolio-pdf-'));
+    const documentPath=path.join(tempDir,'guide.html');
+    await fs.writeFile(documentPath,html,{mode:0o600});
+    await output.loadFile(documentPath);
     await output.webContents.executeJavaScript('Promise.all([document.fonts.ready,...Array.from(document.images).map(i=>i.decode())])');
     const pdf=await output.webContents.printToPDF({printBackground:true,preferCSSPageSize:true,displayHeaderFooter:true,headerTemplate:'<span></span>',footerTemplate:'<div style="font-family:Arial;font-size:9px;color:#819086;width:100%;padding:0 50px;display:flex;justify-content:space-between"><span>STEPFOLIO</span><span><span class="pageNumber"></span> / <span class="totalPages"></span></span></div>'});
     await atomicWrite(file,pdf);
-  }finally{output.destroy();}
+  }catch(e){
+    if(e.code==='ENOSPC')throw new Error('พื้นที่เก็บข้อมูลไม่เพียงพอสำหรับสร้าง PDF');
+    const code=typeof e.code==='string' && /^[A-Z0-9_-]{1,50}$/.test(e.code)?` (${e.code})`:'';
+    throw new Error('ส่งออก PDF ไม่สำเร็จ กรุณาตรวจสอบพื้นที่ว่างและเลือกตำแหน่งบันทึกที่เขียนไฟล์ได้'+code);
+  }finally{
+    if(!output.isDestroyed())output.destroy();
+    if(tempDir)await fs.rm(tempDir,{recursive:true,force:true}).catch(()=>notice('ลบไฟล์ชั่วคราวของ PDF ไม่สำเร็จ กรุณาตรวจสอบสิทธิ์โฟลเดอร์ชั่วคราว',true));
+  }
 }
 ipcMain.handle('stepfolio',async(e,action,data)=>{
   try {
