@@ -12,7 +12,7 @@
 ## เริ่มใช้งาน
 
 1. **Mac:** เปิดไฟล์ `.dmg` แล้วลาก Stepfolio ไปยัง Applications จากนั้นเปิดโปรแกรมจาก Applications
-2. **Windows (ไฟล์ที่แนบในรุ่นนี้):** แตกไฟล์ `Stepfolio-1.0.0-win-x64.zip` ทั้งโฟลเดอร์ แล้วเปิด `Stepfolio.exe` ภายใน ไม่ต้องติดตั้งเพิ่มและไม่ควรย้ายเฉพาะไฟล์ EXE ออกมา ส่วนแพ็กเกจ NSIS/Portable EXE สามารถสร้างบน Windows ผ่าน workflow ที่เตรียมไว้
+2. **Windows:** ใช้ `Stepfolio-Setup-1.0.1-x64.exe` เพื่อติดตั้ง หรือใช้ `Stepfolio-Portable-1.0.1-x64.exe` สำหรับเปิดโดยไม่ติดตั้ง อีกทางเลือกคือแตกไฟล์ `Stepfolio-1.0.1-win-x64.zip` ทั้งโฟลเดอร์แล้วเปิด `Stepfolio.exe` ภายใน ไม่ควรย้ายเฉพาะ EXE ออกจากโฟลเดอร์ ZIP
 3. กด **เริ่มบันทึกการสาธิต** เลือกหน้าจอ และเลือกว่าจะเก็บการเลื่อนหน้าจอ / Enter / Tab / Escape หรือไม่
 4. สาธิตตามปกติ โปรแกรมจะเก็บภาพหลังเหตุการณ์พร้อมตำแหน่งคลิก บนหน้าจอที่เลือกเท่านั้น
 5. กด **Stop** บนแถบลอย หรือ `Cmd+Shift+S` (Mac) / `Ctrl+Shift+S` (Windows)
@@ -70,12 +70,16 @@ npm run dist:win
 - เทคโนโลยี: Electron, native global input hook (`uiohook-napi`), desktopCapturer และ Chromium PDF
 - macOS ใช้ DMG/ZIP; Windows ใช้ NSIS installer/Portable
 - `.github/workflows/build.yml` สร้างแพ็กเกจบน macOS Apple Silicon, Intel และ Windows แบบ native เมื่อสั่ง workflow หรือ push tag `v*`
+- `.github/workflows/windows-release.yml` ใช้ Windows runner สร้าง Setup/Portable/ZIP ติดตั้ง Setup จริง และทดสอบตัวโปรแกรมที่ติดตั้งแล้ว ทั้งหน้าแก้ไข, ไฟล์โครงการ, PDF ภาพขนาดใหญ่ และการจับภาพจาก native Enter / Pause / Resume / Stop ก่อนเผยแพร่ไฟล์บน GitHub Releases เมื่อ push tag `windows-v*`
+- ดาวน์โหลดรุ่น Windows ที่ผ่านขั้นตอนเผยแพร่ได้จาก [GitHub Releases](https://github.com/Svinyoo/stepfolio/releases) หาก repository เป็น Private ผู้รับต้องมีสิทธิ์เข้าถึง หรือดาวน์โหลดไฟล์ไปแชร์ต่อผ่าน Google Drive
 - npm lockfile ระบุ dependency เวอร์ชันที่ทดสอบแล้ว
 - `npm test`: ตรวจ round-trip ของโครงการ, พิกัดหลายจอ, การปฏิเสธข้อมูลผิดรูปแบบ, การ escape ข้อความใน PDF และวงจรบันทึก/Pause/Stop/จับภาพล้มเหลวผ่าน OS adapters จำลอง
 - `scripts/smoke.cjs`: เปิด Electron จริงเพื่อทดสอบการแก้ไข, ย้ายจุดเน้น, จัดลำดับ, ลบ/ย้อนกลับ, ฉบับกู้คืน, โหลด native module และส่งออก PDF โดยใช้ภาพตัวอย่างที่สร้างขึ้นเพื่อทดสอบ ไม่ได้จับภาพหน้าจอผู้ใช้
 - ต้องทดสอบการบันทึกจริงเพิ่มเติมบนแต่ละ OS หลังอนุญาตสิทธิ์ โดยเฉพาะหลายจอและจอที่ใช้สเกลต่างกัน
 
-ผลตรวจบนเครื่องพัฒนา: ผ่าน unit/integration tests 8 รายการ และ smoke test ของ Electron สำหรับการแก้ไข บันทึก/เปิดไฟล์ กู้คืน และ PDF ภาษาไทย การตรวจสิทธิ์บนเครื่องพัฒนาให้ผลว่า Screen Recording และ Accessibility ยังไม่ได้รับอนุญาต จึงยังไม่ได้ทดสอบจับภาพจากเหตุการณ์จริง ไม่ได้รันโปรแกรมบน Windows จริง
+ผลตรวจรุ่น Windows 1.0.1: [GitHub Actions run 36226544152](https://github.com/Svinyoo/stepfolio/actions/runs/36226544152) ผ่าน unit/integration tests 8 รายการ สร้างและติดตั้ง Setup บน Windows runner จริง แล้วรันตัวโปรแกรมที่ติดตั้งเพื่อทดสอบหน้าแก้ไข บันทึก/เปิดโครงการ กู้คืน PDF ภาษาไทยและภาพขนาดใหญ่ รวมถึง desktop capture, native Enter, Pause/Resume และ Stop ผ่านทั้งหมด การทดสอบนี้ไม่ได้ครอบคลุมฮาร์ดแวร์หรือการตั้งค่าหลายจอทุกแบบ
+
+ผลตรวจ macOS บนเครื่องพัฒนา: ผ่านชุดทดสอบและ PDF ภาพขนาดใหญ่ แต่ขณะทดสอบอัตโนมัติยังไม่ได้อนุญาต Screen Recording/Accessibility จึงแยกผลนี้ออกจากการทดสอบ native recording บน Windows
 
 ## เอกสารอ้างอิง
 
