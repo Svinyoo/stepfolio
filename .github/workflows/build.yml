@@ -4,7 +4,7 @@ on:
   push:
     tags: ['v*']
     branches: [main]
-    paths: [package.json]
+    paths: [package.json, package-lock.json, .github/workflows/build.yml]
 permissions:
   contents: read
 jobs:
@@ -84,25 +84,3 @@ jobs:
           name: evidence-${{ matrix.artifact }}
           path: test-results/
           retention-days: 7
-  publish:
-    needs: build
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          pattern: Stepfolio-*
-          merge-multiple: true
-          path: artifacts
-      - name: Publish installers and Thai manual
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-          RELEASE_REF: ${{ github.ref }}
-        run: |
-          RELEASE_TAG="v$(node -p "require('./package.json').version")"
-          cp "output/pdf/Stepfolio-User-Guide-TH-${RELEASE_TAG#v}.pdf" artifacts/
-          gh release create "$RELEASE_TAG" artifacts/* --target "$GITHUB_SHA" --title "Stepfolio ${RELEASE_TAG#v} - Windows and macOS" --notes-file docs/release-notes-1.1.0.md

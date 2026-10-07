@@ -112,4 +112,4 @@ npm run dist:win
 
 เปิดคู่มือที่รวมมากับโปรแกรมได้จากเมนู **ช่วยเหลือ > คู่มือภาษาไทย (PDF)**
 
-การเผยแพร่รุ่นใหม่: อัปเดตเวอร์ชันใน package.json และ lockfile พร้อมคู่มือ จากนั้น push main (เมื่อ package.json เปลี่ยน) หรือ tag v<version> ระบบ build.yml จะสร้างและทดสอบ Windows x64, Mac arm64 และ Mac Intel ก่อนสร้าง GitHub Release พร้อมไฟล์ติดตั้ง คู่มือ และ SHA256SUMS การสั่ง workflow_dispatch จะสร้าง artifacts สำหรับตรวจสอบโดยไม่เผยแพร่ release
+การเผยแพร่รุ่นใหม่: อัปเดตเวอร์ชันใน package.json และ lockfile พร้อมคู่มือ จากนั้น push main (เมื่อ package.json เปลี่ยน) หรือ tag v<version> ระบบ build.yml จะสร้างและทดสอบ Windows x64, Mac arm64 และ Mac Intel พร้อมไฟล์ติดตั้งและ SHA256SUMS ใน Actions artifacts โดยไม่มีการเผยแพร่ Release อัตโนมัติ
