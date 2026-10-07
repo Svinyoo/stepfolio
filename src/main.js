@@ -204,7 +204,7 @@ ipcMain.handle('stepfolio',async(e,action,data)=>{
 });
 app.whenReady().then(()=>{
   if(!singleInstance)return;
-  Menu.setApplicationMenu(Menu.buildFromTemplate([{label:'Stepfolio',submenu:[{role:'about'},{type:'separator'},{role:'quit'}]},{label:'แก้ไข',submenu:[{role:'undo'},{role:'redo'},{type:'separator'},{role:'cut'},{role:'copy'},{role:'paste'},{role:'selectAll'}]}]));
+  Menu.setApplicationMenu(Menu.buildFromTemplate([{label:'Stepfolio',submenu:[{role:'about'},{type:'separator'},{role:'quit'}]},{label:'แก้ไข',submenu:[{role:'undo'},{role:'redo'},{type:'separator'},{role:'cut'},{role:'copy'},{role:'paste'},{role:'selectAll'}]},{label:'ช่วยเหลือ',submenu:[{label:'คู่มือภาษาไทย (PDF)',click:async()=>{const file=app.isPackaged?path.join(process.resourcesPath,'Stepfolio-User-Guide-TH.pdf'):path.join(__dirname,'../output/pdf/Stepfolio-User-Guide-TH-1.1.0.pdf');try{const error=await shell.openPath(file);if(error)notice('เปิดคู่มือไม่สำเร็จ: '+error,true);}catch(e){notice('เปิดคู่มือไม่สำเร็จ: '+e.message,true);}}}]}]));
   createWindow();
   app.on('activate',()=>{if(win && !win.isDestroyed())win.show();else createWindow();});
 });

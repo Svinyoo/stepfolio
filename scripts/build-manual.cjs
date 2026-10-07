@@ -2,7 +2,7 @@ const {_electron:electron}=require('@playwright/test');const fs=require('node:fs
 (async()=>{
  await fs.mkdir('tmp/pdfs',{recursive:true});await fs.mkdir('output/pdf',{recursive:true});
  const css=await fs.readFile('docs/manual/manual.css','utf8');const content=require('../docs/manual/content.cjs')();
- const html=path.resolve('tmp/pdfs/manual.html');await fs.writeFile(html,`<!doctype html><html lang="th"><meta charset="utf-8"><title>คู่มือใช้งาน Stepfolio 1.0.1</title><style>${css}</style>${content}</html>`);
+ const html=path.resolve('tmp/pdfs/manual.html');await fs.writeFile(html,`<!doctype html><html lang="th"><meta charset="utf-8"><title>คู่มือใช้งาน Stepfolio 1.1.0</title><style>${css}</style>${content}</html>`);
  const data=await fs.mkdtemp(path.join(path.resolve('tmp/pdfs'),'print-session-'));
  const app=await electron.launch({args:['.'],env:{...process.env,STEPFOLIO_TEST:'1',STEPFOLIO_TEST_DATA:data}});
  try{
@@ -14,6 +14,6 @@ const {_electron:electron}=require('@playwright/test');const fs=require('node:fs
     const pdf=await w.webContents.printToPDF({printBackground:true,preferCSSPageSize:true,generateTaggedPDF:true});return pdf.toString('base64');
    }finally{w.destroy();}
   },html);
-  await fs.writeFile('output/pdf/Stepfolio-User-Guide-TH-1.0.1.pdf',Buffer.from(result,'base64'));console.log('Created 12-page Thai user guide');
+  await fs.writeFile('output/pdf/Stepfolio-User-Guide-TH-1.1.0.pdf',Buffer.from(result,'base64'));console.log('Created 12-page Thai user guide');
  }finally{await app.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});

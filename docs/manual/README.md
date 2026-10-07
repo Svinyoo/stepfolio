@@ -1,8 +1,8 @@
 # ต้นฉบับคู่มือ Stepfolio ภาษาไทย
 
-คู่มือรุ่น 1.0.1 จำนวน 12 หน้า A4 แนวนอน ภาพประกอบจาก UI ของโปรแกรม โดยใช้ข้อมูลตัวอย่าง ไม่มีภาพหน้าจอส่วนตัวของผู้ใช้งาน
+คู่มือรุ่น 1.1.0 จำนวน 12 หน้า A4 แนวนอน ภาพประกอบจาก UI ของโปรแกรม โดยใช้ข้อมูลตัวอย่าง ไม่มีภาพหน้าจอส่วนตัวของผู้ใช้งาน
 
-- PDF พร้อมแจก: `../../output/pdf/Stepfolio-User-Guide-TH-1.0.1.pdf`
+- PDF พร้อมแจก: `../../output/pdf/Stepfolio-User-Guide-TH-1.1.0.pdf`
 - `content.cjs`: เนื้อหาไทยและตำแหน่งภาพในแต่ละหน้า
 - `manual.css`: รูปแบบและขนาดหน้ากระดาษ
 - `images/`: ภาพหน้าจอ ความสัมพันธ์ของกรอบหมายเลข และตัวอย่างผลลัพธ์ PDF
@@ -10,7 +10,7 @@
 
 ## สร้าง PDF ใหม่
 
-ติดตั้ง dependencies ด้วย `npm ci` แล้วรันบน Mac ที่มีฟอนต์ไทย:
+ติดตั้ง dependencies ด้วย `npm ci` แล้วรันบน Windows หรือ Mac ที่มีฟอนต์ไทย:
 
 ```sh
 node scripts/build-manual.cjs
@@ -34,5 +34,5 @@ node scripts/build-manual.cjs
 ตรวจ PDF ด้วยการ render ทุกหน้าเป็น PNG แล้วตรวจภาพ ข้อความ กรอบหมายเลข และเลขหน้าก่อนแจก:
 
 ```sh
-pdftoppm -scale-to 1200 -png output/pdf/Stepfolio-User-Guide-TH-1.0.1.pdf tmp/pdfs/manual-page
+pdftoppm -scale-to 1200 -png output/pdf/Stepfolio-User-Guide-TH-1.1.0.pdf tmp/pdfs/manual-page
 ```

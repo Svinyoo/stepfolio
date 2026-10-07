@@ -1,5 +1,5 @@
 {
-  "name": "stepfolio", "version": "1.0.1", "private": true,
+  "name": "stepfolio", "version": "1.1.0", "private": true,
   "description": "บันทึกขั้นตอนบนหน้าจอและสร้างคู่มือ PDF", "author": "Stepfolio",
   "main": "src/main.js",
   "scripts": {"start": "electron .", "test": "node --test tests/*.test.js", "pack": "electron-builder --dir", "dist:mac": "electron-builder --mac --publish never", "dist:win": "electron-builder --win --x64 --publish never"},
@@ -8,10 +8,11 @@
   "build": {
     "appId": "com.stepfolio.desktop", "productName": "Stepfolio",
     "directories": {"output": "release"}, "files": ["src/**/*", "package.json"],
+    "extraResources": [{"from": "output/pdf/Stepfolio-User-Guide-TH-1.1.0.pdf", "to": "Stepfolio-User-Guide-TH.pdf"}],
     "asarUnpack": ["**/*.node"], "npmRebuild": false,
     "fileAssociations": [{"ext": "stepfolio", "name": "Stepfolio Project", "role": "Editor"}],
     "mac": {"icon": "assets/icon.icns", "target": ["dmg", "zip"], "category": "public.app-category.productivity", "extendInfo": {"NSScreenCaptureUsageDescription": "บันทึกภาพหน้าจอเพื่อสร้างคู่มือของคุณ", "NSInputMonitoringUsageDescription": "ตรวจจับตำแหน่งคลิกเพื่อบันทึกขั้นตอน"}},
-    "win": {"icon": "assets/icon.ico", "target": ["nsis", "portable"]},
+    "win": {"icon": "assets/icon.ico", "target": ["nsis", "portable", "zip"]},
     "nsis": {"artifactName": "${productName}-Setup-${version}-${arch}.${ext}", "oneClick": false, "allowToChangeInstallationDirectory": true, "createDesktopShortcut": true},
     "portable": {"artifactName": "${productName}-Portable-${version}-${arch}.${ext}"},
     "artifactName": "${productName}-${version}-${os}-${arch}.${ext}"

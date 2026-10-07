@@ -16,6 +16,25 @@ const {createProject}=require('../src/project');
     p.steps=[{id:'step-one',title:'คลิกสร้างเอกสารใหม่',description:'ไปที่มุมขวาบนของหน้าจอ แล้วคลิกปุ่ม “สร้างเอกสารใหม่” เพื่อเริ่มต้น\nตรวจสอบว่าคุณอยู่ในพื้นที่ทำงานของทีมที่ต้องการ',event:'คลิก',capturedAt:new Date().toISOString(),image,width:1440,height:900,marker:{x:.84,y:.15}},{id:'step-two',title:'เลือกเอกสารที่ต้องการ',description:'เลือกเอกสารจากรายการ เพื่อเปิดดูรายละเอียดและแก้ไขข้อมูล',event:'คลิก',capturedAt:new Date().toISOString(),image,width:1440,height:900,marker:{x:.34,y:.44}}];
     const loaded=await page.evaluate(p=>window.stepfolio.call('testLoad',p),p);assert.equal(loaded.ok,true);
     await page.waitForSelector('#step-editor:not([hidden])');await page.locator('#step-title').fill('สร้างเอกสารใหม่สำหรับทีม');await page.locator('#step-description').fill('คลิกปุ่มสีเขียวที่มุมขวาบน แล้วระบุชื่อเอกสาร\nสามารถกลับมาแก้ไขรายละเอียดได้ภายหลัง');
+    await page.locator('#add-point').click();
+    await page.locator('#step-image').click({position:{x:80,y:70}});
+    await page.locator('#step-image').click({position:{x:120,y:90}});
+    assert.equal(await page.locator('#marker-layer [data-point]').count(),3);
+    for(const type of ['rectangle','highlight']){
+      await page.locator('#add-'+type).click();const box=await page.locator('#step-image').boundingBox();
+      await page.mouse.move(box.x+30,box.y+30);await page.mouse.down();await page.mouse.move(box.x+130,box.y+100,{steps:5});await page.mouse.up();
+    }
+    await page.locator('#annotation-text').fill('ข้อความไทย <ทดสอบ>');await page.locator('#add-text').click();await page.locator('#step-image').click({position:{x:50,y:120}});
+    await page.locator('#annotation-color').fill('#123456');
+    await page.locator('#annotation-text').fill('ข้อความที่แก้ไข');await page.locator('#annotation-size').fill('44');
+    await page.locator('#annotation-list').selectOption('2');await page.locator('#annotation-up').click();
+    await page.locator('#marker-toggle').click();assert.equal(await page.locator('#marker-layer [data-point]').count(),2);
+    await page.locator('.step-card').nth(1).click();assert.equal(await page.locator('#marker-layer [data-point="1"]').count(),1);
+    await page.locator('.step-card').nth(0).click();
+    await page.evaluate(()=>updateChain);
+    const annotated=await page.evaluate(()=>window.stepfolio.call('state'));
+    assert.equal(annotated.value.project.steps[0].annotations.length,5);
+    assert.equal(annotated.value.project.steps[0].annotations.find(a=>a.type==='text').color,'#123456');
     await page.locator('#marker-mode').click();await page.locator('#step-image').click({position:{x:150,y:100}});await page.locator('#move-down').click();
     await page.locator('#delete-step').click();await page.locator('#confirm-delete').click();assert.equal(await page.locator('.step-card').count(),1);await page.locator('#undo').click();assert.equal(await page.locator('.step-card').count(),2);
     await page.screenshot({path:path.join(out,'editor.png')});
@@ -31,7 +50,7 @@ const {createProject}=require('../src/project');
     await app.evaluate(({dialog},file)=>{dialog.showSaveDialog=async()=>({canceled:false,filePath:file});dialog.showOpenDialog=async()=>({canceled:false,filePaths:[file]});},file);
     const save=await page.evaluate(()=>window.stepfolio.call('save',true));assert.equal(save.value,true);
     const opened=await page.evaluate(()=>window.stepfolio.call('open'));assert.equal(opened.ok,true);
-    const reopened=await page.evaluate(()=>window.stepfolio.call('state'));assert.equal(reopened.value.project.title,recovered.title);assert.equal(reopened.value.currentFile,file);assert.equal(reopened.value.dirty,false);
+    const reopened=await page.evaluate(()=>window.stepfolio.call('state'));assert.equal(reopened.value.project.title,recovered.title);assert.equal(reopened.value.currentFile,file);assert.equal(reopened.value.dirty,false);assert.deepEqual(reopened.value.project.steps[1].annotations,now.value.project.steps[1].annotations);
     const permission=await page.evaluate(()=>window.stepfolio.call('permissions'));console.log('Recording permission status:',JSON.stringify(permission.value));
     assert.deepEqual(errors,[]);console.log('PASS: editor, Thai text, move marker, reorder, delete/undo, recovery, save/open file, native hook module, PDF export');
   }finally{await app.close();}

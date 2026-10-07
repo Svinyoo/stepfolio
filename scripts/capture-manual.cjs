@@ -2,6 +2,7 @@ const { _electron: electron }=require('@playwright/test');
 const fs=require('node:fs/promises');const path=require('node:path');
 (async()=>{
  const out=path.resolve('docs/manual/images');await fs.mkdir(out,{recursive:true});
+ await fs.mkdir('tmp/pdfs',{recursive:true});
  const data=await fs.mkdtemp(path.join(path.resolve('tmp/pdfs'),'manual-session-'));
  const app=await electron.launch({args:['.'],env:{...process.env,STEPFOLIO_TEST:'1',STEPFOLIO_TEST_DATA:data}});
  const metadata={};
@@ -22,12 +23,22 @@ const fs=require('node:fs/promises');const path=require('node:path');
   p.title='คู่มือสร้างเอกสารสำหรับทีม';p.author='ทีมปฏิบัติการ';
   p.steps[0].title='เลือกเอกสารที่ต้องการ';p.steps[0].description='เลือกเอกสารจากรายการ เพื่อเปิดดูรายละเอียดและแก้ไขข้อมูล';
   p.steps[1].title='สร้างเอกสารใหม่สำหรับทีม';p.steps[1].description='คลิกปุ่มสีเขียว “สร้างเอกสารใหม่” ที่มุมขวาบน\nระบุชื่อเอกสารให้สื่อความหมาย แล้วตรวจสอบข้อมูลก่อนบันทึก';p.steps[1].marker={x:.84,y:.15};
+  p.steps[1].annotations=[
+   {type:'highlight',x:.21,y:.28,width:.22,height:.38,color:'#ffcc00'},
+   {type:'rectangle',x:.74,y:.09,width:.21,height:.12,color:'#22694f'},
+   {type:'point',x:.84,y:.15,color:'#f04c2e'},
+   {type:'point',x:.34,y:.44,color:'#f04c2e'},
+   {type:'point',x:.59,y:.44,color:'#f04c2e'},
+   {type:'text',x:.24,y:.73,text:'เลือกเอกสาร แล้วสร้างรายการใหม่',fontSize:32,color:'#22694f'}
+  ];
   const r=await page.evaluate(p=>window.stepfolio.call('testLoad',p),p);if(!r.ok)throw new Error(r.error);
   await page.locator('.step-card').nth(1).click();
   await snap('workspace','.workspace',[['1','.steps-panel'],['2','.description-form']]);
   await snap('editor','#step-editor',[['1','#step-title'],['2','#step-description']]);
   await snap('caption','.description-form',[['1','#step-title'],['2','#step-description'],['3','#delete-step']]);
   await snap('marker','#step-editor',[['1','#marker-mode'],['2','#marker-toggle'],['3','#zoom']]);
+  await snap('annotation-tools','.annotation-tools');
+  await snap('annotation-preview','.preview');
   await snap('steps','.steps-panel');
   await snap('reorder','.edit-bottom > div');
   await page.locator('#delete-step').click();await snap('delete','#confirm-dialog');await page.locator('#cancel-delete').click();

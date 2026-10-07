@@ -1,223 +1,233 @@
 {
   "welcome": {
     "width": 1204,
-    "height": 688.7578125,
+    "height": 827.921875,
     "annotations": [
       {
         "label": "1",
-        "x": 650.140625,
-        "y": 537.9609375,
-        "width": 183.7109375,
-        "height": 50.3984375
+        "x": 657.078125,
+        "y": 663.140625,
+        "width": 169.828125,
+        "height": 50.390625
       }
     ]
   },
   "record-settings": {
     "width": 470,
-    "height": 614.6484375,
+    "height": 572.9375,
     "annotations": [
       {
         "label": "1",
         "x": 33,
-        "y": 165.1796875,
+        "y": 165.171875,
         "width": 404,
-        "height": 36
+        "height": 38
       },
       {
         "label": "2",
         "x": 33,
-        "y": 221.1796875,
+        "y": 223.171875,
         "width": 404,
-        "height": 50.6875
+        "height": 51
       },
       {
         "label": "3",
         "x": 33,
-        "y": 315.4609375,
+        "y": 317.765625,
         "width": 404,
-        "height": 36
+        "height": 38
       },
       {
         "label": "4",
         "x": 33,
-        "y": 505.0546875,
+        "y": 463.359375,
         "width": 404,
-        "height": 47.1953125
+        "height": 47.1875
       }
     ]
   },
   "workspace": {
-    "width": 1136,
-    "height": 718.75,
+    "width": 1121,
+    "height": 988.703125,
     "annotations": [
       {
         "label": "1",
         "x": 1,
         "y": 1,
         "width": 280,
-        "height": 716.75
+        "height": 986.703125
       },
       {
         "label": "2",
         "x": 281,
-        "y": 432,
-        "width": 854,
-        "height": 285.75
+        "y": 701.96875,
+        "width": 839,
+        "height": 285.734375
       }
     ]
   },
   "editor": {
-    "width": 854,
-    "height": 655.75,
+    "width": 839,
+    "height": 925.703125,
     "annotations": [
       {
         "label": "1",
         "x": 24,
-        "y": 410.59375,
-        "width": 806,
-        "height": 39.1953125
+        "y": 680.5625,
+        "width": 791,
+        "height": 39.1875
       },
       {
         "label": "2",
         "x": 24,
-        "y": 488.3828125,
-        "width": 806,
+        "y": 758.34375,
+        "width": 791,
         "height": 106.375
       }
     ]
   },
   "caption": {
-    "width": 854,
-    "height": 285.75,
+    "width": 839,
+    "height": 285.734375,
     "annotations": [
       {
         "label": "1",
         "x": 24,
         "y": 40.59375,
-        "width": 806,
-        "height": 39.1953125
+        "width": 791,
+        "height": 39.1875
       },
       {
         "label": "2",
         "x": 24,
-        "y": 118.3828125,
-        "width": 806,
+        "y": 118.375,
+        "width": 791,
         "height": 106.375
       },
       {
         "label": "3",
-        "x": 761.21875,
-        "y": 239.15625,
-        "width": 68.78125,
+        "x": 748.96875,
+        "y": 239.140625,
+        "width": 66.03125,
         "height": 29.59375
       }
     ]
   },
   "marker": {
-    "width": 854,
-    "height": 655.75,
+    "width": 839,
+    "height": 925.703125,
     "annotations": [
       {
         "label": "1",
-        "x": 629.40625,
+        "x": 570.140625,
         "y": 13.703125,
-        "width": 84.28125,
+        "width": 105.859375,
         "height": 29.59375
       },
       {
         "label": "2",
-        "x": 720.6875,
+        "x": 683,
         "y": 13.703125,
-        "width": 71.515625,
+        "width": 93.1875,
         "height": 29.59375
       },
       {
         "label": "3",
-        "x": 799.203125,
+        "x": 783.1875,
         "y": 12,
-        "width": 34.796875,
+        "width": 35.8125,
         "height": 33
       }
     ]
   },
+  "annotation-tools": {
+    "width": 839,
+    "height": 202.96875,
+    "annotations": []
+  },
+  "annotation-preview": {
+    "width": 839,
+    "height": 380,
+    "annotations": []
+  },
   "steps": {
     "width": 280,
-    "height": 716.75,
+    "height": 986.703125,
     "annotations": []
   },
   "reorder": {
-    "width": 140.109375,
+    "width": 131.03125,
     "height": 29.59375,
     "annotations": []
   },
   "delete": {
     "width": 470,
-    "height": 201.1875,
+    "height": 201.171875,
     "annotations": []
   },
   "file-actions": {
-    "width": 480.0390625,
-    "height": 39.1953125,
+    "width": 451.265625,
+    "height": 39.1875,
     "annotations": [
       {
         "label": "1",
-        "x": 130.6796875,
+        "x": 123.1875,
         "y": 0,
-        "width": 107.984375,
-        "height": 39.1953125
+        "width": 99.984375,
+        "height": 39.1875
       },
       {
         "label": "2",
-        "x": 248.6640625,
+        "x": 233.171875,
         "y": 0,
-        "width": 106.2890625,
-        "height": 39.1953125
+        "width": 99.03125,
+        "height": 39.1875
       },
       {
         "label": "3",
-        "x": 364.953125,
+        "x": 342.203125,
         "y": 0,
-        "width": 115.0859375,
-        "height": 39.1953125
+        "width": 109.0625,
+        "height": 39.1875
       }
     ]
   },
   "project": {
     "width": 750,
-    "height": 612.1171875,
+    "height": 612.0625,
     "annotations": [
       {
         "label": "1",
         "x": 32,
-        "y": 169.78125,
+        "y": 169.765625,
         "width": 686,
-        "height": 39.1953125
+        "height": 39.1875
       },
       {
         "label": "2",
         "x": 32,
-        "y": 247.5703125,
+        "y": 247.546875,
         "width": 686,
         "height": 149.5625
       },
       {
         "label": "3",
         "x": 32,
-        "y": 442.125,
+        "y": 442.09375,
         "width": 686,
-        "height": 39.1953125
+        "height": 39.1875
       }
     ]
   },
   "recovery": {
-    "width": 1136,
+    "width": 1121,
     "height": 53,
     "annotations": [
       {
         "label": "1",
-        "x": 997.921875,
+        "x": 986.375,
         "y": 11.703125,
-        "width": 81.078125,
+        "width": 75.890625,
         "height": 29.59375
       }
     ]

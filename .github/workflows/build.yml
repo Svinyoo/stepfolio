@@ -1,10 +1,15 @@
-name: Build installers
+name: Build and release Windows and macOS
 on:
   workflow_dispatch:
   push:
     tags: ['v*']
+    branches: [main]
+    paths: [package.json]
+permissions:
+  contents: read
 jobs:
   build:
+    timeout-minutes: 35
     strategy:
       fail-fast: false
       matrix:
@@ -12,9 +17,11 @@ jobs:
           - os: macos-latest
             command: npx electron-builder --mac --arm64 --publish never
             artifact: mac-arm64
+            executable: release/mac-arm64/Stepfolio.app/Contents/MacOS/Stepfolio
           - os: macos-15-intel
             command: npx electron-builder --mac --x64 --publish never
             artifact: mac-intel
+            executable: release/mac/Stepfolio.app/Contents/MacOS/Stepfolio
           - os: windows-latest
             command: npm run dist:win
             artifact: windows-x64
@@ -27,13 +34,75 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
+      - name: Verify release version and bundled manual
+        shell: bash
+        run: |
+          node -e "const fs=require('fs'),p=require('./package.json'); if(process.env.GITHUB_REF_TYPE==='tag' && process.env.GITHUB_REF_NAME!=='v'+p.version) throw Error('Release tag/version mismatch'); fs.accessSync('output/pdf/Stepfolio-User-Guide-TH-'+p.version+'.pdf');"
       - run: ${{ matrix.command }}
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - name: Install Windows Setup
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $version = (Get-Content package.json | ConvertFrom-Json).version
+          $installer = (Resolve-Path "release/Stepfolio-Setup-$version-x64.exe").Path
+          $destination = Join-Path $env:RUNNER_TEMP 'Stepfolio-Installed'
+          $process = Start-Process -FilePath $installer -ArgumentList '/S', "/D=$destination" -WindowStyle Hidden -Wait -PassThru
+          if ($process.ExitCode -ne 0) { throw "Installer exited with $($process.ExitCode)" }
+          $executable = Join-Path $destination 'Stepfolio.exe'
+          if (!(Test-Path $executable)) { throw 'Installed executable not found' }
+          if (!(Test-Path (Join-Path $destination 'resources/Stepfolio-User-Guide-TH.pdf'))) { throw 'Bundled manual missing' }
+          "STEPFOLIO_EXECUTABLE=$executable" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      - name: Locate packaged Mac app
+        if: runner.os == 'macOS'
+        run: |
+          test -f "$(dirname '${{ matrix.executable }}')/../Resources/Stepfolio-User-Guide-TH.pdf"
+          echo "STEPFOLIO_EXECUTABLE=$PWD/${{ matrix.executable }}" >> "$GITHUB_ENV"
+      - name: Test packaged editor, annotations, project round-trip and PDF
+        run: node scripts/smoke.cjs
+      - name: Test large PDF export
+        run: node scripts/pdf-large.cjs
+      - name: Test native Windows recording
+        if: runner.os == 'Windows'
+        run: node scripts/record-windows.cjs
+      - name: Generate file checksums
+        shell: bash
+        run: node scripts/release-checksums.cjs '${{ matrix.artifact }}'
       - uses: actions/upload-artifact@v4
         with:
           name: Stepfolio-${{ matrix.artifact }}
+          if-no-files-found: error
           path: |
             release/*.dmg
             release/*.zip
             release/*.exe
+            release/SHA256SUMS-*.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evidence-${{ matrix.artifact }}
+          path: test-results/
+          retention-days: 7
+  publish:
+    needs: build
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: Stepfolio-*
+          merge-multiple: true
+          path: artifacts
+      - name: Publish installers and Thai manual
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_REF: ${{ github.ref }}
+        run: |
+          RELEASE_TAG="v$(node -p "require('./package.json').version")"
+          cp "output/pdf/Stepfolio-User-Guide-TH-${RELEASE_TAG#v}.pdf" artifacts/
+          gh release create "$RELEASE_TAG" artifacts/* --target "$GITHUB_SHA" --title "Stepfolio ${RELEASE_TAG#v} - Windows and macOS" --notes-file docs/release-notes-1.1.0.md
