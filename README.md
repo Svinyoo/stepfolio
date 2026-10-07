@@ -2,6 +2,42 @@
 
 โปรแกรมสร้างคู่มือจากการสาธิตบนหน้าจอ สำหรับ macOS และ Windows
 
+## ดาวน์โหลดรุ่นล่าสุด 1.1.0
+
+เลือกไฟล์ให้ตรงกับเครื่องของคุณ รุ่นนี้เพิ่มจุดเน้นได้หลายจุดต่อภาพ พร้อมกรอบ ไฮไลท์ ข้อความ และการเลือกสี
+
+| เครื่องที่ใช้งาน | ดาวน์โหลด | ไฟล์ที่แนะนำหลังแตกชุดดาวน์โหลด |
+| --- | --- | --- |
+| Windows 10/11 แบบ 64 บิต (x64) | [Stepfolio-windows-x64](https://github.com/Svinyoo/stepfolio/actions/runs/37566677328/artifacts/11459386117) | `Stepfolio-Setup-1.1.0-x64.exe` |
+| Mac ชิป Apple Silicon (M series) | [Stepfolio-mac-arm64](https://github.com/Svinyoo/stepfolio/actions/runs/37566677328/artifacts/11458249544) | `Stepfolio-1.1.0-mac-arm64.dmg` |
+| Mac ชิป Intel | [Stepfolio-mac-intel](https://github.com/Svinyoo/stepfolio/actions/runs/37566677328/artifacts/11458119736) | `Stepfolio-1.1.0-mac-x64.dmg` |
+
+### วิธีดาวน์โหลด
+
+1. **เข้าสู่ระบบ GitHub ก่อน** แล้วกดลิงก์ของระบบที่ต้องการในตาราง ชุดดาวน์โหลดจาก Actions artifacts เป็นไฟล์ ZIP ที่รวมตัวติดตั้งไว้ภายใน
+2. หากลิงก์ไม่เริ่มดาวน์โหลด ให้เปิด [หน้าผลการสร้างรุ่น 1.1.0](https://github.com/Svinyoo/stepfolio/actions/runs/37566677328) เลื่อนลงไปที่ **Artifacts** แล้วเลือกชื่อแพ็กเกจตามตาราง ไม่ต้องเลือกไฟล์ที่ขึ้นต้นด้วย `evidence-`
+3. แตก ZIP ที่ดาวน์โหลดมา แล้วเลือกติดตั้งตามวิธีด้านล่าง ไม่ต้องดาวน์โหลด Source code หรือใช้ปุ่ม Code > Download ZIP
+
+ไฟล์รุ่น 1.1.0 อยู่ใน **Actions artifacts** ไม่ใช่หน้า Releases และมีกำหนดเก็บถึง **5 มกราคม 2027** หากไฟล์หมดอายุ ให้ผู้ดูแลสร้างแพ็กเกจใหม่ผ่าน Actions ผู้ที่ไม่มีบัญชี GitHub สามารถขอชุดติดตั้งจากผู้ดูแลได้
+
+### ติดตั้งบน Windows
+
+- **แนะนำ — Setup:** เปิด `Stepfolio-Setup-1.1.0-x64.exe` ทำตามขั้นตอนติดตั้ง แล้วเปิด Stepfolio จาก Desktop หรือ Start
+- **Portable:** เปิด `Stepfolio-Portable-1.1.0-x64.exe` เพื่อใช้งานโดยไม่ติดตั้ง
+- **ZIP ของโปรแกรม:** แตก `Stepfolio-1.1.0-win-x64.zip` อีกครั้งทั้งโฟลเดอร์ แล้วเปิด `Stepfolio.exe` ภายใน ต้องเก็บไฟล์ประกอบทั้งหมดไว้ด้วยกัน
+
+### ติดตั้งบน Mac
+
+1. ดูชนิดชิปที่ **เมนู Apple > About This Mac**: ถ้าระบุ Apple M series ให้เลือก arm64; ถ้าระบุ Intel ให้เลือก x64
+2. หลังแตกชุดดาวน์โหลด เปิดไฟล์ DMG ที่ตรงกับชิป แล้วลาก **Stepfolio** ไปยัง **Applications**
+3. เปิดโปรแกรมจาก Applications และอนุญาต **Screen Recording / Screen & System Audio Recording** กับ **Accessibility** ใน **System Settings > Privacy & Security** จากนั้นปิดและเปิดโปรแกรมใหม่หากระบบร้องขอ
+
+### อัปเดตจากรุ่นเดิม
+
+กด **บันทึกโครงการ** เพื่อเก็บไฟล์ `.stepfolio` แล้วปิดโปรแกรมเดิมก่อนติดตั้ง 1.1.0 เปิดไฟล์โครงการเดิมต่อได้ แต่ไฟล์ที่เพิ่มเครื่องหมายหลายรายการควรแก้ไขต่อด้วยรุ่น 1.1.0 ขึ้นไป
+
+ตัวติดตั้งรุ่นนี้ยังไม่มีลายเซ็นผู้เผยแพร่ / notarization ระบบอาจแจ้งเตือนผู้พัฒนาไม่ทราบชื่อ ควรใช้ไฟล์จาก repository นี้หรือผู้ดูแลที่เชื่อถือได้
+
 ## คู่มือสำหรับแจกผู้ใช้งาน
 
 [ดาวน์โหลดคู่มือภาษาไทย PDF พร้อมภาพประกอบ 12 หน้า](output/pdf/Stepfolio-User-Guide-TH-1.1.0.pdf) ครอบคลุมการติดตั้ง Mac/Windows การบันทึก Stop/Pause แก้ไขคำบรรยาย จุดเน้น ลำดับภาพ บันทึกโครงการ ส่งออก PDF และกู้คืนไฟล์
@@ -13,7 +49,7 @@
 - เพิ่มหลายจุดเน้นต่อภาพ เริ่มนับ 1 ใหม่ในแต่ละภาพ และจัดลำดับได้เอง
 - เพิ่มกรอบสี่เหลี่ยม ไฮไลท์ ข้อความ สี และขนาดตัวอักษร พร้อมบันทึกและส่งออก PDF
 - ตัวติดตั้ง Windows Setup/Portable/ZIP และ Mac DMG/ZIP แยก Apple Silicon/Intel
-- คู่มือภาษาไทย 12 หน้าพร้อมภาพหน้าจอรุ่นใหม่ รวมอยู่ในชุดติดตั้งและ GitHub Release
+- คู่มือภาษาไทย 12 หน้าพร้อมภาพหน้าจอรุ่นใหม่ รวมอยู่ในชุดติดตั้งและ repository นี้
 
 ## รุ่น 1.0.1: แก้ส่งออก PDF จากภาพขนาดใหญ่
 
@@ -82,15 +118,17 @@ npm run dist:win
 
 - เทคโนโลยี: Electron, native global input hook (`uiohook-napi`), desktopCapturer และ Chromium PDF
 - macOS ใช้ DMG/ZIP; Windows ใช้ NSIS installer/Portable
-- `.github/workflows/build.yml` สร้างแพ็กเกจบน macOS Apple Silicon, Intel และ Windows แบบ native เมื่อสั่ง workflow หรือ push tag `v*`
+- `.github/workflows/build.yml` สร้างแพ็กเกจบน macOS Apple Silicon, Intel และ Windows แบบ native เมื่อสั่ง workflow, push tag `v*` หรือ push main ที่แก้ package.json, package-lock.json หรือ workflow นี้
 - `.github/workflows/windows-release.yml` ใช้ Windows runner สร้าง Setup/Portable/ZIP ติดตั้ง Setup จริง และทดสอบตัวโปรแกรมที่ติดตั้งแล้ว ทั้งหน้าแก้ไข, ไฟล์โครงการ, PDF ภาพขนาดใหญ่ และการจับภาพจาก native Enter / Pause / Resume / Stop ก่อนเผยแพร่ไฟล์บน GitHub Releases เมื่อ push tag `windows-v*`
-- ดาวน์โหลดรุ่น Windows ที่ผ่านขั้นตอนเผยแพร่ได้จาก [GitHub Releases](https://github.com/Svinyoo/stepfolio/releases) หาก repository เป็น Private ผู้รับต้องมีสิทธิ์เข้าถึง หรือดาวน์โหลดไฟล์ไปแชร์ต่อผ่าน Google Drive
+- รุ่น 1.1.0 ดาวน์โหลดจาก Actions artifacts ตามตารางด้านบน ส่วน [GitHub Releases](https://github.com/Svinyoo/stepfolio/releases) ใช้ดูรุ่นที่เคยเผยแพร่ก่อนหน้านี้
 - npm lockfile ระบุ dependency เวอร์ชันที่ทดสอบแล้ว
 - `npm test`: ตรวจ round-trip ของโครงการ, พิกัดหลายจอ, การปฏิเสธข้อมูลผิดรูปแบบ, การ escape ข้อความใน PDF และวงจรบันทึก/Pause/Stop/จับภาพล้มเหลวผ่าน OS adapters จำลอง
 - `scripts/smoke.cjs`: เปิด Electron จริงเพื่อทดสอบการแก้ไข, ย้ายจุดเน้น, จัดลำดับ, ลบ/ย้อนกลับ, ฉบับกู้คืน, โหลด native module และส่งออก PDF โดยใช้ภาพตัวอย่างที่สร้างขึ้นเพื่อทดสอบ ไม่ได้จับภาพหน้าจอผู้ใช้
 - ต้องทดสอบการบันทึกจริงเพิ่มเติมบนแต่ละ OS หลังอนุญาตสิทธิ์ โดยเฉพาะหลายจอและจอที่ใช้สเกลต่างกัน
 
-ผลตรวจรุ่น Windows 1.0.1: [GitHub Actions run 36226544152](https://github.com/Svinyoo/stepfolio/actions/runs/36226544152) ผ่าน unit/integration tests 8 รายการ สร้างและติดตั้ง Setup บน Windows runner จริง แล้วรันตัวโปรแกรมที่ติดตั้งเพื่อทดสอบหน้าแก้ไข บันทึก/เปิดโครงการ กู้คืน PDF ภาษาไทยและภาพขนาดใหญ่ รวมถึง desktop capture, native Enter, Pause/Resume และ Stop ผ่านทั้งหมด การทดสอบนี้ไม่ได้ครอบคลุมฮาร์ดแวร์หรือการตั้งค่าหลายจอทุกแบบ
+ผลตรวจรุ่น 1.1.0: [GitHub Actions run 37566677328](https://github.com/Svinyoo/stepfolio/actions/runs/37566677328) ผ่านทั้ง Windows x64, Mac Apple Silicon และ Mac Intel รวมชุดทดสอบ 10 รายการ การแก้ไขเครื่องหมาย บันทึก/เปิดโครงการ และ PDF ภาพขนาดใหญ่ Windows ผ่านการติดตั้ง Setup และทดสอบ native recording เพิ่มเติม ส่วนการบันทึกจริงบน Mac ต้องตรวจหลังอนุญาตสิทธิ์บนเครื่องผู้ใช้
+
+ผลตรวจรุ่น Windows 1.0.1 (รุ่นก่อนหน้า): [GitHub Actions run 36226544152](https://github.com/Svinyoo/stepfolio/actions/runs/36226544152) ผ่าน unit/integration tests 8 รายการ สร้างและติดตั้ง Setup บน Windows runner จริง แล้วรันตัวโปรแกรมที่ติดตั้งเพื่อทดสอบหน้าแก้ไข บันทึก/เปิดโครงการ กู้คืน PDF ภาษาไทยและภาพขนาดใหญ่ รวมถึง desktop capture, native Enter, Pause/Resume และ Stop ผ่านทั้งหมด การทดสอบนี้ไม่ได้ครอบคลุมฮาร์ดแวร์หรือการตั้งค่าหลายจอทุกแบบ
 
 ผลตรวจ macOS บนเครื่องพัฒนา: ผ่านชุดทดสอบและ PDF ภาพขนาดใหญ่ แต่ขณะทดสอบอัตโนมัติยังไม่ได้อนุญาต Screen Recording/Accessibility จึงแยกผลนี้ออกจากการทดสอบ native recording บน Windows
 
@@ -113,3 +151,4 @@ npm run dist:win
 เปิดคู่มือที่รวมมากับโปรแกรมได้จากเมนู **ช่วยเหลือ > คู่มือภาษาไทย (PDF)**
 
 การเผยแพร่รุ่นใหม่: อัปเดตเวอร์ชันใน package.json และ lockfile พร้อมคู่มือ จากนั้น push main (เมื่อ package.json เปลี่ยน) หรือ tag v<version> ระบบ build.yml จะสร้างและทดสอบ Windows x64, Mac arm64 และ Mac Intel พร้อมไฟล์ติดตั้งและ SHA256SUMS ใน Actions artifacts โดยไม่มีการเผยแพร่ Release อัตโนมัติ
+
