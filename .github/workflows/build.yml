@@ -37,7 +37,7 @@ jobs:
       - name: Verify release version and bundled manual
         shell: bash
         run: |
-          node -e "const fs=require('fs'),p=require('./package.json'); if(process.env.GITHUB_REF_TYPE==='tag' && process.env.GITHUB_REF_NAME!=='v'+p.version) throw Error('Release tag/version mismatch'); fs.accessSync('output/pdf/Stepfolio-User-Guide-TH-'+p.version+'.pdf');"
+          node -e "const fs=require('fs'),p=require('./package.json'); if(process.env.GITHUB_REF_TYPE==='tag' && process.env.GITHUB_REF_NAME!=='v'+p.version) throw Error('Release tag/version mismatch'); for(const resource of p.build.extraResources)fs.accessSync(resource.from);"
       - run: ${{ matrix.command }}
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
@@ -61,6 +61,8 @@ jobs:
           echo "STEPFOLIO_EXECUTABLE=$PWD/${{ matrix.executable }}" >> "$GITHUB_ENV"
       - name: Test packaged editor, annotations, project round-trip and PDF
         run: node scripts/smoke.cjs
+      - name: Test sidebar scroll position with 70 images
+        run: node scripts/scroll.cjs
       - name: Test large PDF export
         run: node scripts/pdf-large.cjs
       - name: Test native Windows recording
