@@ -6,24 +6,24 @@
 
 **เลือกภาพท้ายรายการได้ต่อเนื่องโดย scrollbar ไม่เด้งกลับบนสุด** รุ่นนี้คงตำแหน่งเลื่อนรายการภาพด้านซ้ายระหว่างเลือกภาพ แก้คำบรรยาย และจัดลำดับ ให้ผู้ใช้เลื่อนขึ้นลงเอง
 
-ตัวติดตั้งรุ่น 1.1.1 กำลังสร้างและตรวจสอบ ดูความคืบหน้าที่ [GitHub Actions](https://github.com/Svinyoo/stepfolio/actions/workflows/build.yml?query=branch%3Amain) ไฟล์ดาวน์โหลดจะปรากฏในส่วน **Artifacts** เมื่อแต่ละแพ็กเกจผ่านการทดสอบ
+[การสร้างและทดสอบรุ่น 1.1.1 ผ่านครบทั้งสามระบบ](https://github.com/Svinyoo/stepfolio/actions/runs/37902851738) รวมการทดสอบรายการ 70 ภาพเพื่อยืนยันว่าตำแหน่งเลื่อนไม่เด้งกลับ เลือกดาวน์โหลดด้านล่างได้เลย
 
-| เครื่องที่ใช้งาน | ชื่อชุดดาวน์โหลดใน Artifacts | ไฟล์ติดตั้งภายใน |
+| เครื่องที่ใช้งาน | ดาวน์โหลดชุดติดตั้ง | ไฟล์ติดตั้งภายใน |
 | --- | --- | --- |
-| Windows 10/11 x64 | Stepfolio-windows-x64 | `Stepfolio-Setup-1.1.1-x64.exe` |
-| Mac Apple Silicon (M series) | Stepfolio-mac-arm64 | `Stepfolio-1.1.1-mac-arm64.dmg` |
-| Mac Intel | Stepfolio-mac-intel | `Stepfolio-1.1.1-mac-x64.dmg` |
+| Windows 10/11 x64 | [Stepfolio-windows-x64](https://github.com/Svinyoo/stepfolio/actions/runs/37902851738/artifacts/11603097276) | `Stepfolio-Setup-1.1.1-x64.exe` |
+| Mac Apple Silicon (M series) | [Stepfolio-mac-arm64](https://github.com/Svinyoo/stepfolio/actions/runs/37902851738/artifacts/11603835034) | `Stepfolio-1.1.1-mac-arm64.dmg` |
+| Mac Intel | [Stepfolio-mac-intel](https://github.com/Svinyoo/stepfolio/actions/runs/37902851738/artifacts/11603126968) | `Stepfolio-1.1.1-mac-x64.dmg` |
 
 ### วิธีดาวน์โหลดและติดตั้ง
 
-1. **เข้าสู่ระบบ GitHub** เปิดหน้าผลการสร้าง แล้วเลื่อนลงไปที่ **Artifacts** เลือกชุดดาวน์โหลดให้ตรงกับเครื่อง ไม่ต้องเลือกไฟล์ที่ขึ้นต้นด้วย `evidence-`
+1. **เข้าสู่ระบบ GitHub** กดลิงก์ในตาราง หรือเปิด [หน้าผลการสร้าง](https://github.com/Svinyoo/stepfolio/actions/runs/37902851738) แล้วเลื่อนลงไปที่ **Artifacts** เลือกชุดดาวน์โหลดให้ตรงกับเครื่อง ไม่ต้องเลือกไฟล์ที่ขึ้นต้นด้วย `evidence-`
 2. แตก ZIP ที่ดาวน์โหลดมาเพื่อเข้าถึงตัวติดตั้ง ไม่ต้องใช้ Code > Download ZIP ซึ่งเป็นซอร์สโค้ดสำหรับผู้พัฒนา
 3. **Windows:** เปิด `Stepfolio-Setup-1.1.1-x64.exe` แล้วทำตามขั้นตอนติดตั้ง จากนั้นเปิดโปรแกรมจาก Desktop หรือ Start
 4. **Mac:** ตรวจชิปจาก Apple > About This Mac เลือก arm64 สำหรับ M series หรือ x64 สำหรับ Intel เปิด DMG แล้วลาก Stepfolio ไปยัง Applications จากนั้นเปิดจาก Applications
 
 สำหรับ Windows มีตัวเลือก **Portable** (`Stepfolio-Portable-1.1.1-x64.exe`) เพื่อเปิดโดยไม่ติดตั้ง และ **ZIP ของโปรแกรม** (`Stepfolio-1.1.1-win-x64.zip`) ซึ่งต้องแตกอีกครั้งทั้งโฟลเดอร์ก่อนเปิด `Stepfolio.exe` และเก็บไฟล์ประกอบทั้งหมดไว้ด้วยกัน
 
-ไฟล์ Actions artifacts มีระยะเวลาจัดเก็บ หากหมดอายุให้ผู้ดูแลสร้างแพ็กเกจใหม่ ผู้ที่ไม่มีบัญชี GitHub สามารถขอชุดติดตั้งจากผู้ดูแลได้ มีไฟล์ `SHA256SUMS-*.txt` ในแต่ละชุดสำหรับตรวจสอบไฟล์ดาวน์โหลด
+ไฟล์ดาวน์โหลดชุดนี้เก็บถึง **7 มกราคม 2027** หากหมดอายุให้ผู้ดูแลสร้างแพ็กเกจใหม่ ผู้ที่ไม่มีบัญชี GitHub สามารถขอชุดติดตั้งจากผู้ดูแลได้ มีไฟล์ `SHA256SUMS-*.txt` ในแต่ละชุดสำหรับตรวจสอบไฟล์ดาวน์โหลด
 
 ก่อนติดตั้ง ให้บันทึกโครงการ `.stepfolio` และปิด Stepfolio ที่เปิดอยู่ ตัวติดตั้งยังไม่มีลายเซ็นผู้เผยแพร่ / notarization ระบบอาจแจ้งเตือนผู้พัฒนาไม่ทราบชื่อ ควรใช้ไฟล์จาก repository นี้หรือผู้ดูแลที่เชื่อถือได้
 
